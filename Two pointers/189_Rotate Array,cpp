@@ -1,0 +1,69 @@
+/*
+Intuition:
+---------
+The goal is to rotate the array to the right by k positions.
+Instead of shifting elements one by one (which is slow),
+we can use a smart observation with reversing.
+
+If we reverse the entire array, the last k elements come to the front,
+but their order is also reversed. To fix the order, we reverse
+the first k elements, and then reverse the remaining elements.
+
+This approach rotates the array in-place without using extra memory.
+
+Example:
+---------
+nums = [1, 2, 3, 4, 5, 6, 7], k = 3
+
+Step 1: Reverse the whole array
+        [7, 6, 5, 4, 3, 2, 1]
+
+Step 2: Reverse first k elements
+        [5, 6, 7, 4, 3, 2, 1]
+
+Step 3: Reverse remaining elements
+        [5, 6, 7, 1, 2, 3, 4]
+
+This is the required rotated array.
+
+Why k = k % n?
+--------------
+If k is greater than the array size, rotating more than n times
+gives the same result as rotating k % n times.
+This also prevents out-of-bounds errors.
+
+Edge Cases Handled:
+-------------------
+- Empty array → return immediately
+- k = 0 → no rotation needed
+
+Time Complexity:
+----------------
+O(n) → Each reverse operation takes linear time
+
+Space Complexity:
+-----------------
+O(1) → Rotation is done in-place without extra memory
+
+Why this approach is efficient:
+-------------------------------
+- No extra arrays used
+- No unnecessary shifting
+- Clean and interview-friendly solution
+*/
+
+#include <algorithm> 
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        int h = nums.size();
+        if (h == 0) return;
+
+        k = k % h;
+        if (k == 0) return;
+
+        std::reverse(nums.begin(), nums.end());
+        std::reverse(nums.begin(), nums.begin() + k);
+        std::reverse(nums.begin() + k, nums.end());
+    }
+};
